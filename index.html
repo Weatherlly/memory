@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosso Amor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #e91e63;
+            --secondary-color: #ff80ab;
+            --text-color: #333;
+            --bg-color: #f8f8f8;
+            --card-bg: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --border-color: #e0e0e0;
+            --frame-color: #f5f5f5;
+        }
+
+        .dark-theme {
+            --primary-color: #ff4081;
+            --secondary-color: #f48fb1;
+            --text-color: #f5f5f5;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --border-color: #333;
+            --frame-color: #2a2a2a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            padding: 10px 0;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: var(--primary-color);
+            transition: transform 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(20deg);
+        }
+
+        section {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            width: 100%;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Player de Música */
+        .music-player {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .player-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .player-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .music-info {
+            margin-top: 10px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        /* Carrossel de Fotos - AJUSTADO */
+        .carousel {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            height: 400px;
+            background-color: var(--frame-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease;
+            height: 100%;
+            width: 100%;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--frame-color);
+        }
+
+        .carousel-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+
+        .carousel-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .carousel-control.prev {
+            left: 10px;
+        }
+
+        .carousel-control.next {
+            right: 10px;
+        }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+
+        .indicator.active {
+            background-color: white;
+        }
+
+        /* Contador de Tempo */
+        .time-counter {
+            text-align: center;
+        }
+
+        .counter {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .counter-label {
+            font-size: 1.2rem;
+            margin-top: 5px;
+            color: var(--text-color);
+        }
+
+        /* Texto Romântico */
+        .love-text {
+            text-align: center;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 20px;
+            font-style: italic;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: var(--text-color);
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .counter {
+                font-size: 1.8rem;
+            }
+            
+            .carousel {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </header>
+
+        <section class="music-player">
+            <h2>Nossa Trilha Sonora</h2>
+            <div class="player-controls">
+                <button class="player-btn" id="prevBtn">
+                    <i class="fas fa-backward"></i>
+                </button>
+                <button class="player-btn" id="playBtn">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button class="player-btn" id="nextBtn">
+                    <i class="fas fa-forward"></i>
+                </button>
+            </div>
+            <div class="music-info">
+                <p>Tocando: <span id="currentSong">Selecione uma música</span></p>
+            </div>
+            <input type="range" id="progressBar" value="0" class="progress-bar">
+        </section>
+
+        <section class="photo-carousel">
+            <h2>Nossos Momentos</h2>
+            <div class="carousel">
+                <div class="carousel-inner" id="carouselInner">
+                    <!-- As imagens serão adicionadas via JavaScript -->
+                </div>
+                <button class="carousel-control prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-control next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <div class="carousel-indicators" id="carouselIndicators"></div>
+            </div>
+        </section>
+
+        <section class="time-counter">
+            <h2>Nosso Tempo Juntos</h2>
+            <div class="counter" id="timeCounter">
+                00:00:00:00
+            </div>
+            <div class="counter-label">
+                Dias : Horas : Minutos : Segundos
+            </div>
+        </section>
+
+        <section class="love-message">
+            <h2>Para Você, Meu Amor</h2>
+            <div class="love-text">
+                <p>Desde o primeiro momento em que nossos caminhos se cruzaram, minha vida ganhou novas cores e significados. Cada segundo ao seu lado é um presente que guardo com todo cuidado no baú do meu coração.</p>
+                <p>Seu sorriso ilumina meus dias, sua voz acalma minha alma, e seu amor preenche cada espaço vazio que eu nem sabia que existia. Você é a melodia que embala meus sonhos e a razão do meu despertar.</p>
+                <p>Este tempo juntos é apenas o começo da nossa eternidade. Mal posso esperar para viver todos os amanhãs ao seu lado, construindo memórias e compartilhando sonhos.</p>
+            </div>
+            <div class="signature">
+                <p>Com todo meu amor,</p>
+                <p>Para sempre seu.</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>Feito com ❤️ especialmente para você</p>
+        </footer>
+    </div>
+
+    <script>
+        // Gerenciamento do tema
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // Verificar se há preferência salva
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-theme');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            
+            if (body.classList.contains('dark-theme')) {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Player de música REAL
+        const playBtn = document.getElementById('playBtn');
+        const currentSongElement = document.getElementById('currentSong');
+        const progressBar = document.getElementById('progressBar');
+        
+        // Lista de músicas (coloque suas músicas na pasta assets/audio/)
+        const songs = [
+            { title: "Nossa Música Especial", src: "assets/musica01.mp3" }
+        ];
+
+        let currentSongIndex = 0;
+        let isPlaying = true;
+        let audio = new Audio(songs[currentSongIndex].src);
+        
+        // Atualizar informações da música
+        function updateSongInfo() {
+            currentSongElement.textContent = songs[currentSongIndex].title;
+            audio.src = songs[currentSongIndex].src;
+            if (isPlaying) audio.play();
+        }
+        
+        // Play/Pause
+        playBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                playBtn.innerHTML = '<i class="fas fa-play"></i>';
+            } else {
+                audio.play();
+                playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // Atualizar barra de progresso
+        audio.addEventListener('timeupdate', () => {
+            const progress = (audio.currentTime / audio.duration) * 100;
+            progressBar.value = progress;
+        });
+
+        // Inicializar informações da primeira música
+        updateSongInfo();
+
+        // Carrossel de fotos - MODIFICADO para exibir imagens completas
+        const carouselInner = document.getElementById('carouselInner');
+        const carouselIndicators = document.getElementById('carouselIndicators');
+        const prevBtn = document.querySelector('.carousel-control.prev');
+        const nextBtn = document.querySelector('.carousel-control.next');
+        
+        // URLs das imagens (substitua pelos nomes reais das suas fotos)
+        const imageUrls = [
+            "assets/01.jpg",
+            "assets/02.jpg",
+            "assets/03.jpg",
+            "assets/04.jpg",
+            "assets/05.jpg",
+            "assets/06.jpg",
+            "assets/07.jpg",
+            "assets/08.jpg",
+            "assets/09.jpg",
+            "assets/10.jpg",
+            "assets/11.jpg",
+            "assets/12.jpg",
+            "assets/13.jpg",
+            "assets/14.jpg",
+            "assets/15.jpg",
+            "assets/16.jpg",
+            "assets/17.jpg",
+            "assets/18.jpg",
+            "assets/19.jpg",
+            "assets/20.jpg",
+            "assets/21.jpg",
+            "assets/22.jpg",
+            "assets/23.jpg",
+            "assets/24.jpg",
+            "assets/25.jpg",
+            "assets/26.jpg",
+            "assets/27.jpg",
+            "assets/28.jpg",
+            "assets/29.jpg",
+            "assets/30.jpg",
+            "assets/31.jpg",
+            "assets/32.jpg",
+            "assets/33.jpg",
+            "assets/34.jpg",
+            "assets/35.jpg",
+            "assets/36.jpg",
+            "assets/37.jpg",
+            "assets/38.jpg",
+            "assets/39.jpg"
+        ];
+        
+        let currentIndex = 0;
+        
+        // Inicializar carrossel
+        imageUrls.forEach((url, index) => {
+            // Criar item do carrossel
+            const item = document.createElement('div');
+            item.className = 'carousel-item';
+            
+            // Criar elemento de imagem (ao invés de background)
+            const img = document.createElement('img');
+            img.src = url;
+            img.alt = `Foto ${index + 1}`;
+            img.className = 'carousel-image';
+            
+            item.appendChild(img);
+            carouselInner.appendChild(item);
+            
+            // Criar indicador
+            const indicator = document.createElement('div');
+            indicator.className = 'indicator' + (index === 0 ? ' active' : '');
+            indicator.dataset.index = index;
+            indicator.addEventListener('click', () => {
+                goToSlide(index);
+            });
+            carouselIndicators.appendChild(indicator);
+        });
+        
+        function goToSlide(index) {
+            currentIndex = index;
+            carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
+            
+            // Atualizar indicadores
+            document.querySelectorAll('.indicator').forEach((ind, i) => {
+                ind.classList.toggle('active', i === currentIndex);
+            });
+        }
+        
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + imageUrls.length) % imageUrls.length;
+            goToSlide(currentIndex);
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % imageUrls.length;
+            goToSlide(currentIndex);
+        });
+        
+        // Auto-avanço do carrossel
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % imageUrls.length;
+            goToSlide(currentIndex);
+        }, 5000);
+
+        // Contador de tempo
+        function updateTimeCounter() {
+            // Defina a data do primeiro momento (substitua com sua data real)
+            const firstMoment = new Date('2023-03-06T18:04:00'); // Formato: AAAA-MM-DDTHH:MM:SS
+            
+            const now = new Date();
+            const diff = now - firstMoment;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('timeCounter').textContent = 
+                `${days.toString().padStart(2, '0')}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Atualizar contador imediatamente e a cada segundo
+        updateTimeCounter();
+        setInterval(updateTimeCounter, 1000);
+    </script>
+</body>
+</html>
